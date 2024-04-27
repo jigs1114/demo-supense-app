@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
-import Loading from '../Loading';
+import Loading from '../components/Loading';
 import AddToCartBtn from '../components/AddToCartBtn';
 
 
