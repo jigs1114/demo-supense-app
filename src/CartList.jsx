@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Loading from './Loading';
 
 const CartList = () => {
-
     const navigate = useNavigate();
     const [cartListArr, setCartListArr] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const cartArr = JSON.parse(localStorage.getItem('cartlist')) || [];
-        setCartListArr(cartArr);
+        const fetchCartList = async () => {
+            try {
+                const cartArr = JSON.parse(localStorage.getItem('cartlist')) || [];
+                setCartListArr(cartArr);
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error fetching cart list: ", error);
+            }
+        };
+
+        fetchCartList();
     }, []);
 
     const updateCartList = (updatedCartList) => {
@@ -44,7 +54,9 @@ const CartList = () => {
     return (
         <div className='p-3'>
             <div className='container cartlist_container'>
-                {cartListArr.length > 0 ?
+                {isLoading ? (
+                    <Loading />
+                ) : cartListArr.length > 0 ? (
                     <div className='row'>
                         {cartListArr.map((data) =>
                             <div key={data.id} className='col-12 p-3'>
@@ -81,7 +93,7 @@ const CartList = () => {
                             <button className='btn btn-outline-primary'>Check Out</button>
                         </div>
                     </div>
-                    :
+                ) : (
                     <div>
                         <div className='text-center'>
                             <div className='mt-3'>
@@ -92,7 +104,7 @@ const CartList = () => {
                             </div>
                         </div>
                     </div>
-                }
+                )}
             </div>
         </div>
     );

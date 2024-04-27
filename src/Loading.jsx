@@ -2,7 +2,7 @@ import React from 'react';
 
 const Loading = () => {
   return (
-    <div>Loading...</div>
+    <div className='text-center mt-5 fs-3 '>Loading...</div>
   );
 }
 

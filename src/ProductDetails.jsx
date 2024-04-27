@@ -1,22 +1,21 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import Loading from './Loading';
 
-function Loading() {
-    return <div>Loading...</div>;
-}
+
 
 function ProductDetails() {
     const navigate = useNavigate();
     const params = useParams();
     const [productDetails, setProductDetails] = useState({});
     const [productImages, setProductImages] = useState({});
-
     const [cartArr, setCartArr] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         getProductData();
-
         getCartData();
     }, []);
 
@@ -27,10 +26,12 @@ function ProductDetails() {
             console.log(data);
             setProductDetails(data || {});
             setProductImages(data.images || {});
+            setIsLoading(false); 
         } catch (err) {
             console.log(err);
         }
     };
+
     const onClickAddtoCartHandle = (data) => {
         const updatedCart = [...cartArr, { ...data, qty: 1 }];
         setCartArr(updatedCart);
@@ -43,8 +44,10 @@ function ProductDetails() {
     };
 
     return (
-        <Suspense fallback={<Loading />}>
-            <>
+        <>
+            {isLoading ? (
+                <Loading />
+            ) : (
                 <div className='p-3'>
                     <div className='container'>
                         <div className='row'>
@@ -77,8 +80,8 @@ function ProductDetails() {
                         </div>
                     </div>
                 </div>
-            </>
-        </Suspense>
+            )}
+        </>
     );
 }
 
