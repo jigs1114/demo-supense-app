@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Loading from './Loading'
+import Loading from '../Loading'
+import AddToCartBtn from '../components/AddToCartBtn';
 const ProductList = () => {
   const navigate = useNavigate();
   const [productArr, setProductArr] = useState([]);
-  const [cartArr, setCartArr] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState('');
   const [searchKey, setSearchKey] = useState('');
 
   useEffect(() => {
     getData();
-    getCartData();
   }, []);
 
   const getData = async () => {
@@ -47,16 +46,6 @@ const ProductList = () => {
     setSortBy('');
   };
 
-  const onClickAddtoCartHandle = (data) => {
-    const updatedCart = [...cartArr, { ...data, qty: 1 }];
-    setCartArr(updatedCart);
-    localStorage.setItem('cartlist', JSON.stringify(updatedCart));
-  };
-
-  const getCartData = () => {
-    const cartlist = JSON.parse(localStorage.getItem('cartlist')) || [];
-    setCartArr(cartlist);
-  };
 
   return (
     <>
@@ -101,10 +90,7 @@ const ProductList = () => {
                         <div className="card-text fw-bold fs-5">$ {data.price.toFixed(2)}</div>
                       </div>
                       <div className='mt-3'>
-                        {cartArr.findIndex(e => e.id === data.id) !== -1 ?
-                          <button className='btn btn-outline-secondary' onClick={() => navigate('/cartlist')}>Go to Cart</button>
-                          :
-                          <button className='btn btn-outline-primary' onClick={() => onClickAddtoCartHandle(data)}>Add to Cart</button>}
+                       <AddToCartBtn data={data} />
                       </div>
                     </div>
                   </div>

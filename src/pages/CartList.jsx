@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Loading from './Loading';
+import Loading from '../Loading';
 
 const CartList = () => {
     const navigate = useNavigate();
