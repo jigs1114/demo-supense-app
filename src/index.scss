@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card {
+ min-height: 350px;
+}
+.card img{
+  aspect-ratio: 3/2;
+  object-fit: contain;
+}
+.productImages img{
+  aspect-ratio: 2/2 ;
+  object-fit: contain ;
+}
+.cartlist_container img{
+  aspect-ratio: 3/2 ;
+  object-fit: contain ;
+}
