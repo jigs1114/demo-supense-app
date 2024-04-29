@@ -4,6 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Loading from '../components/Loading';
 import AddToCartBtn from '../components/AddToCartBtn';
+import Header from '../components/Header';
 
 
 
@@ -34,6 +35,7 @@ function ProductDetails() {
 
     return (
         <>
+        <Header />
             {isLoading ? (
                 <Loading />
             ) : (

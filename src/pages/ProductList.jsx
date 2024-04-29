@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading'
 import AddToCartBtn from '../components/AddToCartBtn';
+import Header from '../components/Header';
 const ProductList = () => {
   const navigate = useNavigate();
   const [productArr, setProductArr] = useState([]);
@@ -49,6 +50,7 @@ const ProductList = () => {
 
   return (
     <>
+      <Header />
       {filteredProducts.length > 0 ?
         <div className='p-3'>
           <div className='container'>
@@ -90,7 +92,7 @@ const ProductList = () => {
                         <div className="card-text fw-bold fs-5">$ {data.price.toFixed(2)}</div>
                       </div>
                       <div className='mt-3'>
-                       <AddToCartBtn data={data} />
+                        <AddToCartBtn data={data} />
                       </div>
                     </div>
                   </div>

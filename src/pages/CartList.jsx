@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
+import Header from '../components/Header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const CartList = () => {
     const navigate = useNavigate();
@@ -52,61 +55,67 @@ const CartList = () => {
     };
 
     return (
-        <div className='p-3'>
-            <div className='container cartlist_container'>
-                {isLoading ? (
-                    <Loading />
-                ) : cartListArr.length > 0 ? (
-                    <div className='row'>
-                        {cartListArr.map((data) =>
-                            <div key={data.id} className='col-12 p-3'>
-                                <div className=" d-flex justify-content-between border-0 shadow p-3" >
-                                    <div className='d-flex '>
-                                        <div className=''>
-                                            <img src={data.thumbnail} className=" rounded " alt="..." width={150} />
+        <>
+            <Header />
+            <div className='p-3'>
+                <div className='container cartlist_container'>
+                    {isLoading ? (
+                        <Loading />
+                    ) : cartListArr.length > 0 ? (
+                        <div className='row'>
+                            {cartListArr.map((data) =>
+                                <div key={data.id} className='col-12 p-3'>
+                                    <div className=" d-flex justify-content-between border-0 shadow p-3" >
+                                        <div className='d-flex  pointer' onClick={() => navigate(`/details/${data.id}`)}>
+                                            
+                                            <div className=''>
+                                                <img src={data.thumbnail} className=" rounded " alt="..." width={150} />
+                                            </div>
+                                            <div className='ms-3'>
+                                                <div className="card-title fs-5">{data.title}</div>
+                                                <div className="card-subtitle mb-2 text-muted fs-6">{data.brand} <small className='text-dark'>({data.category})</small> </div>
+                                            </div>
                                         </div>
-                                        <div className='ms-3'>
-                                            <div className="card-title fs-5">{data.title}</div>
-                                            <div className="card-subtitle mb-2 text-muted fs-6">{data.brand} <small className='text-dark'>({data.category})</small> </div>
+                                        <div className="d-flex fw-bold fs-5">
+                                            <div className="card-text fw-bold fs-5 me-5">$ {(data.price * data.qty).toFixed(2)}</div>
+                                            <div>
+                                                <button className='btn btn-outline-secondary' onClick={() => onClickQtyMinus(data.id)} disabled={data.qty === 1}>-</button>
+                                            </div>
+                                            <div className='mx-3'>
+                                                {data.qty}
+                                            </div>
+                                            <div>
+                                                <button className='btn btn-outline-secondary' onClick={() => onClickQtyAdd(data.id)}>+</button>
+                                            </div>
+
+                                        <div className="ms-3">
+                                                <div className='badge text-danger pointer' onClick={() => onClickDelete(data.id)}><FontAwesomeIcon icon={faTimes} /></div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="d-flex fw-bold fs-5">
-                                        <div>
-                                            <button className='btn btn-outline-secondary' onClick={() => onClickQtyMinus(data.id)} disabled={data.qty === 1}>-</button>
-                                        </div>
-                                        <div className='mx-3'>
-                                            {data.qty}
-                                        </div>
-                                        <div>
-                                            <button className='btn btn-outline-secondary' onClick={() => onClickQtyAdd(data.id)}>+</button>
-                                        </div>
-                                        <div className="card-text fw-bold fs-5 ms-5">$ {(data.price * data.qty).toFixed(2)}</div>
-                                        <div className="card-text fw-bold fs-5 ms-5">
-                                            <button className='btn btn-danger' onClick={() => onClickDelete(data.id)}>Remove</button>
-                                        </div>
+
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        <div className='mt-3 text-end'>
-                            <button className='btn btn-outline-primary'>Check Out</button>
-                        </div>
-                    </div>
-                ) : (
-                    <div>
-                        <div className='text-center'>
-                            <div className='mt-3'>
-                                Cart is empty!
-                            </div>
-                            <div className='mt-3'>
-                                <button className='btn btn-outline-primary' onClick={() => navigate('/')}>Continue Shopping</button>
+                            <div className='mt-3 text-end'>
+                                <button className='btn btn-outline-primary'>Check Out</button>
                             </div>
                         </div>
-                    </div>
-                )}
+                    ) : (
+                        <div>
+                            <div className='text-center'>
+                                <div className='mt-3'>
+                                    Cart is empty!
+                                </div>
+                                <div className='mt-3'>
+                                    <button className='btn btn-outline-primary' onClick={() => navigate('/')}>Continue Shopping</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
