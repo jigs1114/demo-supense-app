@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { createUser } from '../redux/slice/usersSlice';
 
 const Registration = () => {
     const initialState = {
@@ -10,6 +12,7 @@ const Registration = () => {
         password: '',
         confirm_password: ''
     };
+    const dispatch = useDispatch()
     const navigate = useNavigate();
     const [formData, setFormData] = useState(initialState);
     
@@ -51,6 +54,7 @@ const Registration = () => {
         const userDataArr = JSON.parse(localStorage.getItem('userDataArr')) || [];
         const dataObject = { first_name, last_name, email_id, password };
         userDataArr.push(dataObject);
+        dispatch(createUser(dataObject))
         localStorage.setItem("userDataArr", JSON.stringify(userDataArr));
         toast.success('Successfully Registered!');
         navigate('/login');

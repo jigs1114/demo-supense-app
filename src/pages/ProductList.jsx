@@ -3,23 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading'
 import AddToCartBtn from '../components/AddToCartBtn';
 import Header from '../components/Header';
+import { useSelector } from 'react-redux';
 const ProductList = () => {
+  
   const navigate = useNavigate();
   const [productArr, setProductArr] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState('');
   const [searchKey, setSearchKey] = useState('');
-
+  const [isLoading, setIsLoading] = useState(true);
+  let data = useSelector(state => state.users)
   useEffect(() => {
     getData();
+    console.log(data);
   }, []);
 
   const getData = async () => {
     try {
       const response = await fetch('https://dummyjson.com/products');
       const data = await response.json();
-      setProductArr(data.products || []);
-      setFilteredProducts(data.products || []);
+      if (data) {
+        setIsLoading(false)
+        setProductArr(data.products || []);
+        setFilteredProducts(data.products || []);
+      } else {
+        setProductArr([]);
+        setFilteredProducts([]);
+        setIsLoading(false)
+
+      }
     } catch (err) {
       console.log(err);
     }
@@ -51,7 +63,7 @@ const ProductList = () => {
   return (
     <>
       <Header />
-      {filteredProducts.length > 0 ?
+      {isLoading ? <Loading /> :
         <div className='p-3'>
           <div className='container'>
             <div className='row'>
@@ -77,33 +89,35 @@ const ProductList = () => {
                 </div>
               </div>
             </div>
-
-            <div className='row'>
-              {filteredProducts.map((data) =>
-                <div key={data.id} className='col-lg-4 col-12 p-3'>
-                  <div className="card border-0 shadow" >
-                    <div className='p-2'>
-                      <img src={data.thumbnail} className="card-img-top rounded " alt="..." />
-                    </div>
-                    <div className="card-body" >
-                      <div onClick={() => navigate(`/details/${data.id}`)}>
-                        <div className="card-title fs-5">{data.title}</div>
-                        <div className="card-subtitle mb-2 text-muted fs-6">{data.brand} <small className='text-dark'>({data.category})</small> </div>
-                        <div className="card-text fw-bold fs-5">$ {data.price.toFixed(2)}</div>
+            {filteredProducts.length > 0 ?
+              <div className='row'>
+                {filteredProducts.map((data) =>
+                  <div key={data.id} className='col-lg-4 col-12 p-3'>
+                    <div className="card border-0 shadow" >
+                      <div className='p-2'>
+                        <img src={data.thumbnail} className="card-img-top rounded " alt="..." />
                       </div>
-                      <div className='mt-3'>
-                        <AddToCartBtn data={data} />
+                      <div className="card-body" >
+                        <div onClick={() => navigate(`/details/${data.id}`)}>
+                          <div className="card-title fs-5">{data.title}</div>
+                          <div className="card-subtitle mb-2 text-muted fs-6">{data.brand} <small className='text-dark'>({data.category})</small> </div>
+                          <div className="card-text fw-bold fs-5">$ {data.price.toFixed(2)}</div>
+                        </div>
+                        <div className='mt-3'>
+                          <AddToCartBtn data={data} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-
+                )}
+              </div>
+              :
+              <div className='text-center text-danger p-5 mt-5 fw-bold'>Product not found!</div>
+            }
           </div>
-        </div> :
-        <Loading />
+        </div>
       }
+
     </>
   );
 };

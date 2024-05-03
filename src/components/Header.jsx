@@ -8,7 +8,7 @@ function Header() {
     const [userData, setUserData] = useState('')
     useEffect(() => {
         updateUser()
-    })
+    },[])
     const updateUser = () => {
         const uData = JSON.parse(localStorage.getItem('loginUser')) || null
         setUserData(uData)
